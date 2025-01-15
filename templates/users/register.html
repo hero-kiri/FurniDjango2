@@ -3,13 +3,18 @@
 {% block content %}
     <!-- Start Register Section -->
         <div class="register">
-            <div class="container-register">
+            <div class="register-wrapper">
                 <h2>Регистрация</h2>
-                <form action="#" method="POST">
+                <form action="{% url 'register' %}" method="POST">
+                    {% csrf_token %}
                     <!-- Имя пользователя -->
                     <div class="form-group">
                         <label for="username">Имя пользователя:</label>
                         <input type="text" id="username" name="username" required placeholder="Введите имя пользователя">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Телефон:</label>
+                        <input type="tel" id="phone" name="phone_number" required placeholder="Введите номер телефона">
                     </div>
 
                     <div class="form-group">
@@ -19,24 +24,19 @@
 
                     <div class="form-group">
                         <label for="password">Пароль:</label>
-                        <input type="password" id="password" name="password" required placeholder="Введите пароль">
+                        <input type="password" id="password" name="password1" required placeholder="Введите пароль">
                     </div>
 
                     <div class="form-group">
                         <label for="confirm-password">Повторите пароль:</label>
-                        <input type="password" id="confirm-password" name="confirm-password" required placeholder="Повторите пароль">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="phone">Телефон:</label>
-                        <input type="tel" id="phone" name="phone" required placeholder="Введите номер телефона">
+                        <input type="password" id="confirm-password" name="password2" required placeholder="Повторите пароль">
                     </div>
 
                     <button type="submit">Зарегистрироваться</button>
                 </form>
 
                 <div class="form-footer">
-                    <p>Уже есть аккаунт? <a href="#">Войти</a></p>
+                    <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
                 </div>
             </div>
         </div>

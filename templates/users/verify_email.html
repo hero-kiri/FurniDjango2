@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+<center>
+<div class="email-verification-container">
+    <h2>Подтвердите свой адрес электронной почты</h2>
+    <p>Пожалуйста, введите 6-значный код, отправленный на ваш электронный адрес:</p>
+    <h4 class="verification-error">{{ error }}</h4>
+    <form method="post" id="email-verification-form">
+        {% csrf_token %}
+        <div class="email-verification-code-inputs">
+            <input type="text" id="verification-code1" maxlength="1" class="verification-code-input" required>
+            <input type="text" id="verification-code2" maxlength="1" class="verification-code-input" required>
+            <input type="text" id="verification-code3" maxlength="1" class="verification-code-input" required>
+            <input type="text" id="verification-code4" maxlength="1" class="verification-code-input" required>
+            <input type="text" id="verification-code5" maxlength="1" class="verification-code-input" required>
+            <input type="text" id="verification-code6" maxlength="1" class="verification-code-input" required>
+        </div>
+        <input type="hidden" name="code" id="hidden-verification-code">
+        <button type="submit" class="email-verification-submit-button">Подтвердить</button>
+    </form>
+</div>
+</center>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const codeInputs = document.querySelectorAll(".verification-code-input");
+        const hiddenCodeInput = document.getElementById("hidden-verification-code");
+
+        codeInputs.forEach((input, index) => {
+            input.addEventListener("input", () => {
+                if (input.value.length === 1 && index < codeInputs.length - 1) {
+                    codeInputs[index + 1].focus();
+                }
+                updateHiddenCodeInput();
+            });
+
+            input.addEventListener("keydown", (event) => {
+                if (event.key === "Backspace" && input.value.length === 0 && index > 0) {
+                    codeInputs[index - 1].focus();
+                }
+            });
+        });
+
+        function updateHiddenCodeInput() {
+            let codeValue = "";
+            codeInputs.forEach(input => {
+                codeValue += input.value;
+            });
+            hiddenCodeInput.value = codeValue;
+        }
+    });
+</script>
+
+<style>
+/* Стили для верификации email */
+
+.email-verification-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 600px;
+    max-width: 100%;
+    text-align: center !important;
+    /* Убираем позиционирование, чтобы использовать Flexbox */
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    /* Добавляем margin для мобильных устройств */
+    margin: 20px;
+}
+
+.email-verification-code-inputs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.verification-code-input {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.verification-code-input:last-child {
+    margin-right: 0;
+}
+
+.email-verification-submit-button {
+    background-color: #6a11cb;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.email-verification-submit-button:hover {
+    background-color: #2575fc;
+}
+
+.verification-error {
+    color: #ff3d3d;
+}
+</style>
+
+{% endblock %}

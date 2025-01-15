@@ -24,7 +24,7 @@
 		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
 			<div class="container">
-				<a class="navbar-brand" href="index.html">Furni<span>.</span></a>
+				<a class="navbar-brand" href="{% url 'index' %}">Furni<span>.</span></a>
 
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -40,6 +40,15 @@
 						<li><a class="nav-link" href="{% url 'services' %}">Services</a></li>
 						<li><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
 						<li><a class="nav-link" href="{% url 'contact' %}">Contact us</a></li>
+						{% if user.is_authenticated %}
+						<li class="nav-item">
+							<a class="nav-link" href="#">{{ user.username }}</a>
+							<a class="nav-link" href="#">Выйти</a>
+						</li>
+						{% else %}
+						<li><a class="nav-link" href="{% url 'register' %}">Регистрация</a></li>
+						<li><a class="nav-link" href="{% url 'login' %}">Авторизация</a></li>
+						{% endif %}
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
@@ -51,6 +60,15 @@
 				
 		</nav>
 		<!-- End Header/Navigation -->
+		 <div class="messages">
+			{% if messages %}
+			<ul>
+				{% for message in messages %}
+					<li class="message {{ message.tags }}">{{ message }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+		 </div>
 
         {% block content %}
 
